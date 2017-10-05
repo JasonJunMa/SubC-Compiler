@@ -19,7 +19,7 @@ public enum SubCTokenType implements TokenType
         AUTO,DOUBLE,INT,STRUCT,BREAK,ELSE,LONG,SWITCH,
         CASE,ENUM,REGISTER,TYPEDEF,CHAR,EXTERN,RETURN,UNION,
         CONST,FLOAT,SHORT,UNSIGNED,CONTINUE,FOR,SIGNED,VOID,
-        DEFAULT,GOTO,SIZEOF,VOLATILE,DO,IF,STATIC,INCLUDE,WHILE,
+        DEFAULT,GOTO,SIZEOF,VOLATILE,DO,IF,STATIC,WHILE,
 
         // Special symbols.
         PLUS("+"),PLUS_EQUAL("+="), INCREMENT("++"),MINUS("-"), MINUS_EQUAL("-="),DECREMENT("--"), STAR("*"), STAR_EAUQL("*="),
@@ -27,7 +27,7 @@ public enum SubCTokenType implements TokenType
         LESS_THAN("<"), LESS_EQUALS("<="),GREATER_EQUALS(">="), GREATER_THAN(">"),AMPERSAND("&"),AND("&&"),
         VERTICAL_BAR("|"),OR("||"),PERCENT_SIGN("%"),MOLDULE("%="),BACKSLASH("\\"),
         DOT("."), COMMA(","), SEMICOLON(";"), COLON(":"), QUOTE("'"),DOUBLE_QUOTE("\""),NUMBER_SIGN("#"),
-        TILDE("~"), DOLLAR_SIGN("$"),LEFT_PAREN("("), RIGHT_PAREN(")"),QUESTION("?"),
+        TILDE("~"),LEFT_PAREN("("), RIGHT_PAREN(")"),QUESTION("?"),
         LEFT_BRACKET("["), RIGHT_BRACKET("]"), LEFT_BRACE("{"), RIGHT_BRACE("}"),UNDERSCORE("_"),APOSTROPHE("`"),UP_ARROW("^"),
 
         IDENTIFIER, INTEGER, REAL, STRING,
