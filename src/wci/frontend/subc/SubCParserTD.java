@@ -1,18 +1,18 @@
 package wci.frontend.subc;
 
 import wci.frontend.*;
+import wci.frontend.subc.parsers.*;
 import wci.intermediate.*;
 import wci.message.*;
 
 import static wci.frontend.subc.SubCTokenType.*;
 import static wci.frontend.subc.SubCErrorCode.*;
-import static wci.intermediate.symtabimpl.SymTabKeyImpl.*;
 import static wci.message.MessageType.PARSER_SUMMARY;
 
 /**
- * <h1>PascalParserTD</h1>
+ * <h1>SubCParserTD</h1>
  *
- * <p>The top-down Pascal parser.</p>
+ * <p>The top-down SubC parser.</p>
  *
  * <p>Copyright (c) 2009 by Ronald Mak</p>
  * <p>For instructional purposes only.  No warranties.</p>
@@ -31,39 +31,57 @@ public class SubCParserTD extends Parser
     }
 
     /**
-     * Parse a Pascal source program and generate the symbol table
+     * Constructor for subclasses.
+     * @param parent the parent parser.
+     */
+    public SubCParserTD(SubCParserTD parent)
+    {
+        super(parent.getScanner());
+    }
+
+    /**
+     * Getter.
+     * @return the error handler.
+     */
+    public SubCErrorHandler getErrorHandler()
+    {
+        return errorHandler;
+    }
+
+    /**
+     * Parse a SubC source program and generate the symbol table
      * and the intermediate code.
+     *  @throws Exception if an error occurred.
      */
     public void parse()
         throws Exception
     {
-        Token token;
         long startTime = System.currentTimeMillis();
+        iCode = ICodeFactory.createICode();
 
         try {
-            // Loop over each token until the end of file.
-            while (!((token = nextToken()) instanceof EofToken)) {
-                TokenType tokenType = token.getType();
+            Token token = nextToken();
+            ICodeNode rootNode = null;
 
-                // Cross reference only the identifiers.
-                if (tokenType == IDENTIFIER) {
-                    String name = token.getText().toLowerCase();
+            // Look for the BEGIN token to parse a compound statement.
+            if (token.getType() == LEFT_BRACE) {
+                StatementParser statementParser = new StatementParser(this);
+                rootNode = statementParser.parse(token);
+                token = currentToken();
+            }
+            else {
+                errorHandler.flag(token, UNEXPECTED_TOKEN, this);
+            }
 
-                    // If it's not already in the symbol table,
-                    // create and enter a new entry for the identifier.
-                    SymTabEntry entry = symTabStack.lookup(name);
-                    if (entry == null) {
-                        entry = symTabStack.enterLocal(name);
-                    }
+            // Look for the final period.
+            //if (token.getType() != DOT) {
+            //    errorHandler.flag(token, MISSING_PERIOD, this);
+            //}
+            token = currentToken();
 
-                    // Append the current line number to the entry.
-                    entry.appendLineNumber(token.getLineNumber());
-                }
-
-                else if (tokenType == ERROR) {
-                    errorHandler.flag(token, (SubCErrorCode) token.getValue(),
-                                      this);
-                }
+            // Set the parse tree root node.
+            if (rootNode != null) {
+                iCode.setRoot(rootNode);
             }
 
             // Send the parser summary message.

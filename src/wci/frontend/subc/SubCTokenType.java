@@ -23,9 +23,9 @@ public enum SubCTokenType implements TokenType
 
         // Special symbols.
         PLUS("+"),PLUS_EQUAL("+="), INCREMENT("++"),MINUS("-"), MINUS_EQUAL("-="),DECREMENT("--"), STAR("*"), STAR_EAUQL("*="),
-        SLASH("/"),SLASH_EQUAL("/="),ASSIGN("="),EQUALS("=="),EXCLAMATION("!"),NOT_EQUALS("!="),
+        SLASH("/"),SLASH_EQUAL("/="),ASSIGN("="),EQUALS("=="),NOT("!"),NOT_EQUALS("!="),
         LESS_THAN("<"), LESS_EQUALS("<="),GREATER_EQUALS(">="), GREATER_THAN(">"),AMPERSAND("&"),AND("&&"),
-        VERTICAL_BAR("|"),OR("||"),PERCENT_SIGN("%"),MOLDULE("%="),BACKSLASH("\\"),
+        VERTICAL_BAR("|"),OR("||"),MOD("%"),MOD_EQUALS("%="),BACKSLASH("\\"),
         DOT("."), COMMA(","), SEMICOLON(";"), COLON(":"), QUOTE("'"),DOUBLE_QUOTE("\""),NUMBER_SIGN("#"),
         TILDE("~"),LEFT_PAREN("("), RIGHT_PAREN(")"),QUESTION("?"),
         LEFT_BRACKET("["), RIGHT_BRACKET("]"), LEFT_BRACE("{"), RIGHT_BRACE("}"),UNDERSCORE("_"),APOSTROPHE("`"),UP_ARROW("^"),

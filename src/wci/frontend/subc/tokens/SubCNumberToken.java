@@ -84,6 +84,13 @@ public class SubCNumberToken extends SubCToken
                     return;
                 }
             }
+        }else{
+          type = ERROR;
+          value = INVALID_NUMBER;
+          while(!Character.isWhitespace(currentChar)){
+            currentChar = nextChar();
+          }
+          return;
         }
 
         // Is there an exponent part?
