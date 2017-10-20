@@ -47,14 +47,14 @@ public class ExpressionParser extends StatementParser
 
     // Set of relational operators.
     private static final EnumSet<SubCTokenType> REL_OPS =
-        EnumSet.of(EQUALS, NOT_EQUALS, LESS_THAN, LESS_EQUALS,
+        EnumSet.of(EQUAL_EQUALS, NOT_EQUALS, LESS_THAN, LESS_EQUALS,
                    GREATER_THAN, GREATER_EQUALS);
 
     // Map relational operator tokens to node types.
     private static final HashMap<SubCTokenType, ICodeNodeType>
         REL_OPS_MAP = new HashMap<SubCTokenType, ICodeNodeType>();
     static {
-        REL_OPS_MAP.put(EQUALS, EQ);
+        REL_OPS_MAP.put(EQUAL_EQUALS, EQ);
         REL_OPS_MAP.put(NOT_EQUALS, NE);
         REL_OPS_MAP.put(LESS_THAN, LT);
         REL_OPS_MAP.put(LESS_EQUALS, LE);

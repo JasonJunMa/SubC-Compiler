@@ -49,7 +49,7 @@ public class StatementExecutor extends Executor
                 return compoundExecutor.execute(node);
             }
 
-            case ASSIGNMENT: {
+            case ASSIGN: {
                 AssignmentExecutor assignmentExecutor =
                     new AssignmentExecutor(this);
                 return assignmentExecutor.execute(node);

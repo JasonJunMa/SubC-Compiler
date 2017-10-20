@@ -22,8 +22,8 @@ public enum SubCTokenType implements TokenType
         DEFAULT,GOTO,SIZEOF,VOLATILE,DO,IF,STATIC,WHILE,
 
         // Special symbols.
-        PLUS("+"),PLUS_EQUAL("+="), INCREMENT("++"),MINUS("-"), MINUS_EQUAL("-="),DECREMENT("--"), STAR("*"), STAR_EAUQL("*="),
-        SLASH("/"),SLASH_EQUAL("/="),ASSIGN("="),EQUALS("=="),NOT("!"),NOT_EQUALS("!="),
+        PLUS("+"),PLUS_EQUALS("+="), INCREMENT("++"),MINUS("-"), MINUS_EQUALS("-="),DECREMENT("--"), STAR("*"), STAR_EAUQLS("*="),
+        SLASH("/"),SLASH_EQUALS("/="),EQUALS("="),EQUAL_EQUALS("=="),NOT("!"),NOT_EQUALS("!="),
         LESS_THAN("<"), LESS_EQUALS("<="),GREATER_EQUALS(">="), GREATER_THAN(">"),AMPERSAND("&"),AND("&&"),
         VERTICAL_BAR("|"),OR("||"),MOD("%"),MOD_EQUALS("%="),BACKSLASH("\\"),
         DOT("."), COMMA(","), SEMICOLON(";"), COLON(":"), QUOTE("'"),DOUBLE_QUOTE("\""),NUMBER_SIGN("#"),
