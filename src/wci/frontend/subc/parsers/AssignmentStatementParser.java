@@ -38,7 +38,7 @@ public class AssignmentStatementParser extends StatementParser
         throws Exception
     {
         // Create the ASSIGN node.
-        ICodeNode assignNode = ICodeFactory.createICodeNode(ASSIGNMENT);
+        ICodeNode assignNode = ICodeFactory.createICodeNode(ASSIGN);
 
         // Look up the target identifer in the symbol table stack.
         // Enter the identifier into the table if it's not found.
@@ -59,7 +59,7 @@ public class AssignmentStatementParser extends StatementParser
         assignNode.addChild(variableNode);
 
         // Look for the = token.
-        if (token.getType() == ASSIGN) {
+        if (token.getType() == EQUALS) {
             token = nextToken();  // consume the =
         }
         else {
@@ -70,7 +70,7 @@ public class AssignmentStatementParser extends StatementParser
         // node as its second child.
         ExpressionParser expressionParser = new ExpressionParser(this);
         assignNode.addChild(expressionParser.parse(token));
-        
+
         // check whether the last token of the statment is a ;
         token = currentToken();
         if(token.getType() != SEMICOLON){
