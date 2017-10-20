@@ -10,6 +10,6 @@
 		fahrenheit = centigrade/ratio + 32/2;
 
 		centigrade = 25;
-		fahrenheit = 32 + centigrade/ratio;
+		fahrenheit = 32 + centigrade/ratio
 	}
 }

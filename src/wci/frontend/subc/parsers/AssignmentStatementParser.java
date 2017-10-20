@@ -70,7 +70,12 @@ public class AssignmentStatementParser extends StatementParser
         // node as its second child.
         ExpressionParser expressionParser = new ExpressionParser(this);
         assignNode.addChild(expressionParser.parse(token));
-
+        
+        // check whether the last token of the statment is a ;
+        token = currentToken();
+        if(token.getType() != SEMICOLON){
+          errorHandler.flag(token, MISSING_SEMICOLON, this);
+        }
         return assignNode;
     }
 }
