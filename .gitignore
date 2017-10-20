@@ -1,5 +1,10 @@
 # Compiled class file
 *.class
+/classes/
+
+#Eclipse project file
+.classpath
+.project
 
 # Log file
 *.log
