@@ -33,6 +33,11 @@ public class ExpressionParser extends StatementParser
         super(parent);
     }
 
+    // Synchronization set for starting an expression.
+    static final EnumSet<SubCTokenType> EXPR_START_SET =
+        EnumSet.of(PLUS, MINUS, IDENTIFIER, INTEGER, REAL, STRING,
+                   SubCTokenType.NOT, LEFT_PAREN);
+
     /**
      * Parse an expression.
      * @param token the initial token.

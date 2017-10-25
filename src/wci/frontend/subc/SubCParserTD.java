@@ -1,5 +1,7 @@
 package wci.frontend.subc;
 
+import java.util.EnumSet;
+
 import wci.frontend.*;
 import wci.frontend.subc.parsers.*;
 import wci.intermediate.*;
@@ -19,7 +21,7 @@ import static wci.message.MessageType.PARSER_SUMMARY;
  */
 public class SubCParserTD extends Parser
 {
-  protected static SubCErrorHandler errorHandler = new SubCErrorHandler();
+    protected static SubCErrorHandler errorHandler = new SubCErrorHandler();
 
     /**
      * Constructor.
@@ -51,7 +53,7 @@ public class SubCParserTD extends Parser
     /**
      * Parse a SubC source program and generate the symbol table
      * and the intermediate code.
-     *  @throws Exception if an error occurred.
+     * @throws Exception if an error occurred.
      */
     public void parse()
         throws Exception
@@ -103,5 +105,34 @@ public class SubCParserTD extends Parser
     public int getErrorCount()
     {
         return errorHandler.getErrorCount();
+    }
+
+    /**
+     * Synchronize the parser.
+     * @param syncSet the set of token types for synchronizing the parser.
+     * @return the token where the parser has synchronized.
+     * @throws Exception if an error occurred.
+     */
+    public Token synchronize(EnumSet syncSet)
+        throws Exception
+    {
+        Token token = currentToken();
+
+        // If the current token is not in the synchronization set,
+        // then it is unexpected and the parser must recover.
+        if (!syncSet.contains(token.getType())) {
+
+            // Flag the unexpected token.
+            errorHandler.flag(token, UNEXPECTED_TOKEN, this);
+
+            // Recover by skipping tokens that are not
+            // in the synchronization set.
+            do {
+                token = nextToken();
+            } while (!(token instanceof EofToken) &&
+                     !syncSet.contains(token.getType()));
+        }
+
+        return token;
     }
 }

@@ -1,5 +1,7 @@
 package wci.frontend.subc.parsers;
 
+import java.util.EnumSet;
+
 import wci.frontend.*;
 import wci.frontend.subc.*;
 import wci.intermediate.*;
@@ -28,6 +30,14 @@ public class AssignmentStatementParser extends StatementParser
         super(parent);
     }
 
+    // Synchronization set for the = token.
+    private static final EnumSet<SubCTokenType> EQUALS_SET =
+        ExpressionParser.EXPR_START_SET.clone();
+    static {
+        EQUALS_SET.add(EQUALS);
+        EQUALS_SET.addAll(StatementParser.STMT_FOLLOW_SET);
+    }
+
     /**
      * Parse an assignment statement.
      * @param token the initial token.
@@ -49,7 +59,7 @@ public class AssignmentStatementParser extends StatementParser
         }
         targetId.appendLineNumber(token.getLineNumber());
 
-        token = nextToken();  // consume the identifier token
+        token = nextToken(); // consume the identifier token
 
         // Create the variable node and set its name attribute.
         ICodeNode variableNode = ICodeFactory.createICodeNode(VARIABLE);
@@ -59,8 +69,9 @@ public class AssignmentStatementParser extends StatementParser
         assignNode.addChild(variableNode);
 
         // Look for the = token.
+        token = synchronize(EQUALS_SET);
         if (token.getType() == EQUALS) {
-            token = nextToken();  // consume the =
+            token = nextToken(); // consume the =
         }
         else {
             errorHandler.flag(token, MISSING_EQUALS, this);
@@ -73,8 +84,8 @@ public class AssignmentStatementParser extends StatementParser
 
         // check whether the last token of the statment is a ;
         token = currentToken();
-        if(token.getType() != SEMICOLON){
-          errorHandler.flag(token, MISSING_SEMICOLON, this);
+        if (token.getType() != SEMICOLON) {
+            errorHandler.flag(token, MISSING_SEMICOLON, this);
         }
         return assignNode;
     }
