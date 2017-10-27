@@ -55,6 +55,10 @@ public class RepeatStatementParser extends StatementParser
         ExpressionParser expressionParser = new ExpressionParser(this);
         testNode.addChild(expressionParser.parse(token));
         loopNode.addChild(testNode);
+        token = currentToken();
+        if (token.getType() != SEMICOLON) {
+            errorHandler.flag(token, MISSING_SEMICOLON, this);
+        }
 
         return loopNode;
     }
