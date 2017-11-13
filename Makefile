@@ -1,10 +1,11 @@
 target:
-	mkdir bin
-	javac -classpath bin -d bin -sourcepath src src/*java
+	make clean
+	mkdir classes
+	javac -classpath classes -d classes -sourcepath src src/*java
 
 run:
-	java -classpath bin SubC compile -i hello.c
+	java -classpath classes SubC compile -x hello.c
 
 clean:
 	rm -rf *.class
-	rm -r bin
+	rm -rf classes
