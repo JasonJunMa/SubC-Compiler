@@ -15,8 +15,8 @@ import static wci.intermediate.symtabimpl.SymTabKeyImpl.*;
 import static wci.intermediate.symtabimpl.DefinitionImpl.*;
 import static wci.intermediate.typeimpl.TypeFormImpl.*;
 import static wci.intermediate.typeimpl.TypeKeyImpl.*;
-import static wci.intermediate.icodeimpl.ICodeNodeTypeImpl.*;
-import static wci.intermediate.icodeimpl.ICodeKeyImpl.*;
+//import static wci.intermediate.icodeimpl.ICodeNodeTypeImpl.*;
+//import static wci.intermediate.icodeimpl.ICodeKeyImpl.*;
 
 /**
  * <h1>ConstantDefinitionsParser</h1>
@@ -75,10 +75,10 @@ public class ConstantDefinitionsParser extends DeclarationsParser
      * @param token the initial token.
      * @throws Exception if an error occurred.
      */
-    public ICodeNode parse(Token token)
+    public void parse(Token token)
         throws Exception
     {
-        ICodeNode constantNode = ICodeFactory.createICodeNode(INTEGER_CONSTANT);
+        //ICodeNode constantNode = ICodeFactory.createICodeNode(INTEGER_CONSTANT);
         constantType =parseTypeSpec(token);
         if(constantType==null){
             constantType = Predefined.integerType;
@@ -151,7 +151,7 @@ public class ConstantDefinitionsParser extends DeclarationsParser
         else
             nextToken();
 
-        return constantNode;
+        //return constantNode;
     }
 
 

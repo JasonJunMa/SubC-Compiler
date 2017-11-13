@@ -71,31 +71,36 @@ public class StatementParser extends SubCParserTD
             case INT:{
                 DeclarationsParser declarationsParser =
                     new DeclarationsParser(this);
-                statementNode = declarationsParser.parse(token);
+                declarationsParser.parse(token);
+                statementNode = null;
                 break;
             }
             case CHAR:{
                 DeclarationsParser declarationsParser =
                     new DeclarationsParser(this);
-                statementNode = declarationsParser.parse(token);
+                declarationsParser.parse(token);
+                statementNode = null;
                 break;
             }
             case FLOAT:{
                 DeclarationsParser declarationsParser =
                     new DeclarationsParser(this);
-                statementNode = declarationsParser.parse(token);
+                declarationsParser.parse(token);
+                statementNode = null;
                 break;
             }
             case DOUBLE:{
                 DeclarationsParser declarationsParser =
                     new DeclarationsParser(this);
-                statementNode = declarationsParser.parse(token);
+                declarationsParser.parse(token);
+                statementNode = null;
                 break;
             }
             case CONST:{
                 DeclarationsParser declarationsParser =
                     new DeclarationsParser(this);
-                statementNode = declarationsParser.parse(token);
+                declarationsParser.parse(token);
+                statementNode = null;
                 break;
             }
 

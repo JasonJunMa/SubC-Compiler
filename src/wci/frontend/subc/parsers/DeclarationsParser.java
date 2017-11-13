@@ -62,10 +62,10 @@ public class DeclarationsParser extends SubCParserTD
      * @param token the initial token.
      * @throws Exception if an error occurred.
      */
-    public ICodeNode parse(Token token)
+    public void parse(Token token)
         throws Exception
     {
-        ICodeNode declarationNode = null;
+        //ICodeNode declarationNode = null;
         //token = synchronize(DECLARATION_START_SET);
 
         if (token.getType() == CONST) {
@@ -73,7 +73,7 @@ public class DeclarationsParser extends SubCParserTD
 
             ConstantDefinitionsParser constantDefinitionsParser =
                 new ConstantDefinitionsParser(this);
-                declarationNode = constantDefinitionsParser.parse(token);
+            constantDefinitionsParser.parse(token);
         }
 
         //  token = synchronize(TYPE_START_SET);
@@ -94,10 +94,10 @@ public class DeclarationsParser extends SubCParserTD
             VariableDeclarationsParser variableDeclarationsParser =
                 new VariableDeclarationsParser(this);
             variableDeclarationsParser.setDefinition(VARIABLE);
-            declarationNode = variableDeclarationsParser.parse(token);
+            variableDeclarationsParser.parse(token);
         }
 
-        return declarationNode;
+        //return declarationNode;
         //token = synchronize(ROUTINE_START_SET);
     }
 }

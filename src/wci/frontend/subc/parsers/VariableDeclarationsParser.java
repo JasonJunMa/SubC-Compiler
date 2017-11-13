@@ -14,8 +14,8 @@ import static wci.intermediate.symtabimpl.SymTabKeyImpl.*;
 import static wci.intermediate.symtabimpl.DefinitionImpl.*;
 import static wci.intermediate.typeimpl.TypeFormImpl.*;
 import static wci.intermediate.typeimpl.TypeKeyImpl.*;
-import static wci.intermediate.icodeimpl.ICodeNodeTypeImpl.*;
-import static wci.intermediate.icodeimpl.ICodeKeyImpl.*;
+//import static wci.intermediate.icodeimpl.ICodeNodeTypeImpl.*;
+//import static wci.intermediate.icodeimpl.ICodeKeyImpl.*;
 
 
 /**
@@ -69,10 +69,10 @@ public class VariableDeclarationsParser extends DeclarationsParser
      * @param token the initial token.
      * @throws Exception if an error occurred.
      */
-    public ICodeNode parse(Token token)
+    public void parse(Token token)
         throws Exception
     {
-        ICodeNode variableDeclarationNode = ICodeFactory.createICodeNode(VARIABLE_DECLARE);
+        //ICodeNode variableDeclarationNode = ICodeFactory.createICodeNode(VARIABLE_DECLARE);
         // Parse the type specification.
         type = parseTypeSpec(token);
         token = synchronize(IDENTIFIER_SET);
@@ -100,7 +100,7 @@ public class VariableDeclarationsParser extends DeclarationsParser
 
             //token = synchronize(IDENTIFIER_SET);
         }
-        return variableDeclarationNode;
+        //return variableDeclarationNode;
     }
 
     // Synchronization set to start a sublist identifier.
