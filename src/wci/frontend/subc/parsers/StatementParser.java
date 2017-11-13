@@ -33,7 +33,7 @@ public class StatementParser extends SubCParserTD
     // Synchronization set for starting a statement.
     protected static final EnumSet<SubCTokenType> STMT_START_SET =
         EnumSet.of(LEFT_BRACE, SWITCH, FOR, SubCTokenType.IF, DO, WHILE,
-                   IDENTIFIER, SEMICOLON);
+                   IDENTIFIER, SEMICOLON,INT,CHAR,DOUBLE,FLOAT,CONST);
 
     // Synchronization set for following a statement.
     protected static final EnumSet<SubCTokenType> STMT_FOLLOW_SET =
@@ -51,9 +51,6 @@ public class StatementParser extends SubCParserTD
     {
         ICodeNode statementNode = null;
 
-        while(token.getType()==INT){
-          token = nextToken();
-        }
         switch ((SubCTokenType) token.getType()) {
 
             case LEFT_BRACE: {
@@ -68,6 +65,37 @@ public class StatementParser extends SubCParserTD
                 AssignmentStatementParser assignmentParser =
                     new AssignmentStatementParser(this);
                 statementNode = assignmentParser.parse(token);
+                break;
+            }
+
+            case INT:{
+                DeclarationsParser declarationsParser =
+                    new DeclarationsParser(this);
+                statementNode = declarationsParser.parse(token);
+                break;
+            }
+            case CHAR:{
+                DeclarationsParser declarationsParser =
+                    new DeclarationsParser(this);
+                statementNode = declarationsParser.parse(token);
+                break;
+            }
+            case FLOAT:{
+                DeclarationsParser declarationsParser =
+                    new DeclarationsParser(this);
+                statementNode = declarationsParser.parse(token);
+                break;
+            }
+            case DOUBLE:{
+                DeclarationsParser declarationsParser =
+                    new DeclarationsParser(this);
+                statementNode = declarationsParser.parse(token);
+                break;
+            }
+            case CONST:{
+                DeclarationsParser declarationsParser =
+                    new DeclarationsParser(this);
+                statementNode = declarationsParser.parse(token);
                 break;
             }
 

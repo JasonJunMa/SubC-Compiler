@@ -15,6 +15,9 @@ public enum SymTabKeyImpl implements SymTabKey
     // Constant.
     CONSTANT_VALUE,
 
+    // VARIABLE
+    VARIABLE_VALUE,
+
     // Procedure or function.
     ROUTINE_CODE, ROUTINE_SYMTAB, ROUTINE_ICODE,
     ROUTINE_PARMS, ROUTINE_ROUTINES,

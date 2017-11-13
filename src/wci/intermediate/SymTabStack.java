@@ -13,6 +13,18 @@ import java.util.ArrayList;
 public interface SymTabStack
 {
     /**
+     * Setter.
+     * @param entry the symbol table entry for the main program identifier.
+     */
+    public void setProgramId(SymTabEntry entry);
+
+    /**
+     * Getter.
+     * @return the symbol table entry for the main program identifier.
+     */
+    public SymTabEntry getProgramId();
+
+    /**
      * Getter.
      * @return the current nesting level.
      */
@@ -23,6 +35,25 @@ public interface SymTabStack
      * @return the local symbol table.
      */
     public SymTab getLocalSymTab();
+
+    /**
+     * Push a new symbol table onto the stack.
+     * @return the pushed symbol table.
+     */
+    public SymTab push();
+
+    /**
+     * Push a symbol table onto the stack.
+     * @param symTab the symbol table to push.
+     * @return the pushed symbol table.
+     */
+    public SymTab push(SymTab symTab);
+
+    /**
+     * Pop a symbol table off the stack.
+     * @return the popped symbol table.
+     */
+    public SymTab pop();
 
     /**
      * Create and enter a new entry into the local symbol table.

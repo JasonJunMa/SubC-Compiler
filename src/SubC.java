@@ -7,7 +7,7 @@ import wci.backend.*;
 import wci.message.*;
 import wci.util.*;
 
-import static wci.frontend.subc.SubCTokenType.STRING;
+import static wci.intermediate.symtabimpl.SymTabKeyImpl.*;
 import static wci.message.MessageType.*;
 
 /**
@@ -50,16 +50,20 @@ public class SubC
             source.close();
 
             if (parser.getErrorCount() == 0) {
-                iCode = parser.getICode();
                 symTabStack = parser.getSymTabStack();
+
+                SymTabEntry programId = symTabStack.getProgramId();
+                iCode = (ICode) programId.getAttribute(ROUTINE_ICODE);
+
                 if (xref) {
                     CrossReferencer crossReferencer = new CrossReferencer();
                     crossReferencer.print(symTabStack);
                 }
+
                 if (intermediate) {
                     ParseTreePrinter treePrinter =
                                          new ParseTreePrinter(System.out);
-                    treePrinter.print(iCode);
+                    treePrinter.print(symTabStack);
                 }
 
                 backend.process(iCode, symTabStack);

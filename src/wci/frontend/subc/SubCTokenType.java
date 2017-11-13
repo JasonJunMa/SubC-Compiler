@@ -6,9 +6,9 @@ import java.util.HashSet;
 import wci.frontend.TokenType;
 
 /**
- * <h1>PascalTokenType</h1>
+ * <h1>SubCTokenType</h1>
  *
- * <p>Pascal token types.</p>
+ * <p>SubC token types.</p>
  *
  * <p>Copyright (c) 2009 by Ronald Mak</p>
  * <p>For instructional purposes only.  No warranties.</p>
@@ -30,7 +30,7 @@ public enum SubCTokenType implements TokenType
         TILDE("~"),LEFT_PAREN("("), RIGHT_PAREN(")"),QUESTION("?"),
         LEFT_BRACKET("["), RIGHT_BRACKET("]"), LEFT_BRACE("{"), RIGHT_BRACE("}"),UNDERSCORE("_"),APOSTROPHE("`"),UP_ARROW("^"),
 
-        IDENTIFIER, INTEGER, REAL, STRING,
+        IDENTIFIER, INTEGER, REAL, CHARACTER, STRING,
         ERROR, END_OF_FILE;
 
         private static final int FIRST_RESERVED_INDEX = AUTO.ordinal();
@@ -67,7 +67,7 @@ public enum SubCTokenType implements TokenType
                 return text;
         }
 
-        // Set of lower-cased Pascal reserved word text strings.
+        // Set of lower-cased SubC reserved word text strings.
         public static HashSet<String> RESERVED_WORDS = new HashSet<String>();
         static {
                 SubCTokenType values[] = SubCTokenType.values();
@@ -76,8 +76,8 @@ public enum SubCTokenType implements TokenType
                 }
         }
 
-        // Hash table of Pascal special symbols.  Each special symbol's text
-        // is the key to its Pascal token type.
+        // Hash table of SubC special symbols.  Each special symbol's text
+        // is the key to its SubC token type.
         public static Hashtable<String, SubCTokenType> SPECIAL_SYMBOLS =
                 new Hashtable<String, SubCTokenType>();
         static {
