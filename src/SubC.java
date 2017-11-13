@@ -56,6 +56,9 @@ public class SubC
                 iCode = (ICode) programId.getAttribute(ROUTINE_ICODE);
 
                 if (xref) {
+                    ParseTreePrinter treePrinter =
+                                new ParseTreePrinter(System.out);
+                    treePrinter.print(symTabStack);
                     CrossReferencer crossReferencer = new CrossReferencer();
                     crossReferencer.print(symTabStack);
                 }
