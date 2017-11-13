@@ -9,9 +9,9 @@ import static wci.frontend.subc.SubCTokenType.*;
 import static wci.frontend.subc.SubCErrorCode.*;
 
 /**
- * <h1>PascalScanner</h1>
+ * <h1>SubCScanner</h1>
  *
- * <p>The Pascal scanner.</p>
+ * <p>The SubC scanner.</p>
  *
  * <p>Copyright (c) 2009 by Ronald Mak</p>
  * <p>For instructional purposes only.  No warranties.</p>
@@ -28,7 +28,7 @@ public class SubCScanner extends Scanner
     }
 
     /**
-     * Extract and return the next Pascal token from the source.
+     * Extract and return the next SubC token from the source.
      * @return the next token.
      * @throws Exception if an error occurred.
      */
@@ -71,9 +71,10 @@ public class SubCScanner extends Scanner
         else if (Character.isDigit(currentChar)) {
             token = new SubCNumberToken(source);
         }
-        else if (currentChar == '\"') { //double quote is a string
+        else if (currentChar == '\"'||currentChar == '\'') { //double quote is a string
             token = new SubCStringToken(source);
         }
+
         else if (SubCTokenType.SPECIAL_SYMBOLS
                  .containsKey(Character.toString(currentChar))) {
             token = new SubCSpecialSymbolToken(source);

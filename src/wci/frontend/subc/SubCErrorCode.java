@@ -1,9 +1,9 @@
 package wci.frontend.subc;
 
 /**
- * <h1>PascalErrorCode</h1>
+ * <h1>SubCErrorCode</h1>
  *
- * <p>Pascal translation error codes.</p>
+ * <p>SubC translation error codes.</p>
  *
  * <p>Copyright (c) 2009 by Ronald Mak</p>
  * <p>For instructional purposes only.  No warranties.</p>

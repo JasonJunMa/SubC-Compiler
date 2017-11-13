@@ -6,9 +6,9 @@ import wci.frontend.subc.*;
 import static wci.frontend.subc.SubCTokenType.*;
 
 /**
- * <h1>PascalWordToken</h1>
+ * <h1>SubCWordToken</h1>
  *
- * <p> Pascal word tokens (identifiers and reserved words).</p>
+ * <p> SubC word tokens (identifiers and reserved words).</p>
  *
  * <p>Copyright (c) 2009 by Ronald Mak</p>
  * <p>For instructional purposes only.  No warranties.</p>
@@ -27,7 +27,7 @@ public class SubCWordToken extends SubCToken
     }
 
     /**
-     * Extract a Pascal word token from the source.
+     * Extract a SubC word token from the source.
      * @throws Exception if an error occurred.
      */
     protected void extract()

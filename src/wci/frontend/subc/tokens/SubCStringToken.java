@@ -8,9 +8,9 @@ import static wci.frontend.subc.SubCTokenType.*;
 import static wci.frontend.subc.SubCErrorCode.*;
 
 /**
- * <h1>PascalStringToken</h1>
+ * <h1>SubCStringToken</h1>
  *
- * <p> Pascal string tokens.</p>
+ * <p> SubC string tokens.</p>
  *
  * <p>Copyright (c) 2009 by Ronald Mak</p>
  * <p>For instructional purposes only.  No warranties.</p>
@@ -29,7 +29,7 @@ public class SubCStringToken extends SubCToken
     }
 
     /**
-     * Extract a Pascal string token from the source.
+     * Extract a SubC string token from the source.
      * @throws Exception if an error occurred.
      */
     protected void extract()

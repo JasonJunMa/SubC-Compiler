@@ -7,9 +7,9 @@ import static wci.frontend.subc.SubCTokenType.*;
 import static wci.frontend.subc.SubCErrorCode.*;
 
 /**
- * <h1>PascalSpecialSymbolToken</h1>
+ * <h1>SubCSpecialSymbolToken</h1>
  *
- * <p> Pascal special symbol tokens.</p>
+ * <p> SubC special symbol tokens.</p>
  *
  * <p>Copyright (c) 2009 by Ronald Mak</p>
  * <p>For instructional purposes only.  No warranties.</p>
@@ -28,7 +28,7 @@ public class SubCSpecialSymbolToken extends SubCToken
     }
 
     /**
-     * Extract a Pascal special symbol token from the source.
+     * Extract a SubC special symbol token from the source.
      * @throws Exception if an error occurred.
      */
     protected void extract()
@@ -50,9 +50,9 @@ public class SubCSpecialSymbolToken extends SubCToken
                 break;
             }
 
-            // : or :=
+            // + or += or ++
             case '+': {
-                currentChar = nextChar();  // consume ':';
+                currentChar = nextChar();  // consume '+';
 
                 if (currentChar == '=') {
                     text += currentChar;
@@ -60,15 +60,15 @@ public class SubCSpecialSymbolToken extends SubCToken
                 }
                 else if(currentChar == '+'){
                     text += currentChar;
-                    nextChar();  // consume '='
+                    nextChar();  // consume '+'
                 }
 
                 break;
             }
 
-            // < or <= or <>
+            // - or -= or --
             case '-': {
-                currentChar = nextChar();  // consume '<';
+                currentChar = nextChar();  // consume '-';
 
                 if (currentChar == '=') {
                     text += currentChar;
@@ -76,12 +76,12 @@ public class SubCSpecialSymbolToken extends SubCToken
                 }
                 else if(currentChar == '-'){
                     text += currentChar;
-                    nextChar();  // consume '='
+                    nextChar();  // consume '-'
                 }
                 break;
             }
 
-            // > or >=
+            // * or *=
             case '*': {
                 currentChar = nextChar();  // consume '>';
 
@@ -93,86 +93,110 @@ public class SubCSpecialSymbolToken extends SubCToken
                 break;
             }
 
+            // / or /=
             case '/': {
-                currentChar = nextChar();  // consume '.';
+                currentChar = nextChar();  // consume '/';
 
                 if (currentChar == '=') {
                     text += currentChar;
-                    nextChar();  // consume '.'
+                    nextChar();  // consume '='
                 }
 
                 break;
             }
+
+            // % or %=
+            case '%': {
+                currentChar = nextChar();  // consume '%';
+
+                if (currentChar == '=') {
+                    text += currentChar;
+                    nextChar();  // consume '='
+                }
+
+                break;
+            }
+
+            // = or ==
             case '=': {
-                currentChar = nextChar();  // consume '.';
+                currentChar = nextChar();  // consume '=';
 
                 if (currentChar == '=') {
                     text += currentChar;
-                    nextChar();  // consume '.'
+                    nextChar();  // consume '='
                 }
 
                 break;
             }
+
+            // ! or !=
             case '!': {
-                currentChar = nextChar();  // consume '.';
+                currentChar = nextChar();  // consume '!';
 
                 if (currentChar == '=') {
                     text += currentChar;
-                    nextChar();  // consume '.'
+                    nextChar();  // consume '='
                 }
 
                 break;
             }
+
+            // < or <= or <<
             case '<': {
-                currentChar = nextChar();  // consume '.';
+                currentChar = nextChar();  // consume '<';
 
                 if (currentChar == '=') {
                     text += currentChar;
-                    nextChar();  // consume '.'
+                    nextChar();  // consume '='
+                }
+                else if(currentChar == '<'){
+                    text += currentChar;
+                    nextChar();  // consume '<'
                 }
 
                 break;
             }
+
+            // > or >= or >>
             case '>': {
-                currentChar = nextChar();  // consume '.';
+                currentChar = nextChar();  // consume '>';
 
                 if (currentChar == '=') {
                     text += currentChar;
-                    nextChar();  // consume '.'
+                    nextChar();  // consume '='
+                }
+                else if(currentChar == '>'){
+                    text += currentChar;
+                    nextChar();  // consume '>'
                 }
 
                 break;
             }
+
+            // & or &&
             case '&': {
-                currentChar = nextChar();  // consume '.';
+                currentChar = nextChar();  // consume '&';
 
                 if (currentChar == '&') {
                     text += currentChar;
-                    nextChar();  // consume '.'
+                    nextChar();  // consume '&'
                 }
 
                 break;
             }
+
+            // | or ||
             case '|': {
-                currentChar = nextChar();  // consume '.';
+                currentChar = nextChar();  // consume '|';
 
                 if (currentChar == '|') {
                     text += currentChar;
-                    nextChar();  // consume '.'
+                    nextChar();  // consume '||'
                 }
 
                 break;
             }
-            case '%': {
-                currentChar = nextChar();  // consume '.';
 
-                if (currentChar == '=') {
-                    text += currentChar;
-                    nextChar();  // consume '.'
-                }
-
-                break;
-            }
 
             default: {
                 nextChar();  // consume bad character

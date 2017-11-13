@@ -8,9 +8,9 @@ import static wci.frontend.subc.SubCErrorCode.*;
 import static wci.message.MessageType.SYNTAX_ERROR;
 
 /**
- * <h1>PascalErrorHandler</h1>
+ * <h1>SubCErrorHandler</h1>
  *
- * <p>Error handler Pascal syntax errors.</p>
+ * <p>Error handler SubC syntax errors.</p>
  *
  * <p>Copyright (c) 2009 by Ronald Mak</p>
  * <p>For instructional purposes only.  No warranties.</p>

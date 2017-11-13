@@ -6,9 +6,9 @@ import wci.frontend.subc.*;
 import static wci.frontend.subc.SubCTokenType.*;
 
 /**
- * <h1>PascalErrorToken</h1>
+ * <h1>SubCErrorToken</h1>
  *
- * <p>Pascal error token.</p>
+ * <p>SubC error token.</p>
  *
  * <p>Copyright (c) 2009 by Ronald Mak</p>
  * <p>For instructional purposes only.  No warranties.</p>

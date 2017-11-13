@@ -7,9 +7,9 @@ import static wci.frontend.subc.SubCTokenType.*;
 import static wci.frontend.subc.SubCErrorCode.*;
 
 /**
- * <h1>PascalNumberToken</h1>
+ * <h1>SubCNumberToken</h1>
  *
- * <p>Pascal number tokens (integer and real).</p>
+ * <p>SubC number tokens (integer and real).</p>
  *
  * <p>Copyright (c) 2009 by Ronald Mak</p>
  * <p>For instructional purposes only.  No warranties.</p>
@@ -30,7 +30,7 @@ public class SubCNumberToken extends SubCToken
     }
 
     /**
-     * Extract a Pascal number token from the source.
+     * Extract a SubC number token from the source.
      * @throws Exception if an error occurred.
      */
     protected void extract()
@@ -42,7 +42,7 @@ public class SubCNumberToken extends SubCToken
     }
 
     /**
-     * Extract a Pascal number token from the source.
+     * Extract a SubC number token from the source.
      * @param textBuffer the buffer to append the token's characters.
      * @throws Exception if an error occurred.
      */
@@ -53,7 +53,6 @@ public class SubCNumberToken extends SubCToken
         String fractionDigits = null;  // digits after the decimal point
         String exponentDigits = null;  // exponent digits
         char exponentSign = '+';       // exponent sign '+' or '-'
-        //boolean sawDotDot = false;     // true if saw .. token
         char currentChar;              // current character
 
         type = INTEGER;  // assume INTEGER token type for now

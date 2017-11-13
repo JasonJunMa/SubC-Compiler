@@ -3,9 +3,9 @@ package wci.frontend.subc;
 import wci.frontend.*;
 
 /**
- * <h1>PascalToken</h1>
+ * <h1>SubCToken</h1>
  *
- * <p>Base class for Pascal token classes.</p>
+ * <p>Base class for SubC token classes.</p>
  *
  * <p>Copyright (c) 2009 by Ronald Mak</p>
  * <p>For instructional purposes only.  No warranties.</p>
