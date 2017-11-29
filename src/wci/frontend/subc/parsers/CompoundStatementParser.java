@@ -7,6 +7,7 @@ import wci.intermediate.*;
 import static wci.frontend.subc.SubCTokenType.*;
 import static wci.frontend.subc.SubCErrorCode.*;
 import static wci.intermediate.icodeimpl.ICodeNodeTypeImpl.*;
+import static wci.intermediate.icodeimpl.ICodeKeyImpl.*;
 
 /**
  * <h1>CompoundStatementParser</h1>

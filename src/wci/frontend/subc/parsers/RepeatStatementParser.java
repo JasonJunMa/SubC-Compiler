@@ -3,6 +3,8 @@ package wci.frontend.subc.parsers;
 import wci.frontend.*;
 import wci.frontend.subc.*;
 import wci.intermediate.*;
+import wci.intermediate.symtabimpl.*;
+import wci.intermediate.typeimpl.*;
 
 import static wci.frontend.subc.SubCTokenType.*;
 import static wci.frontend.subc.SubCErrorCode.*;
@@ -53,8 +55,17 @@ public class RepeatStatementParser extends StatementParser
         // The TEST node adopts the expression subtree as its only child.
         // The LOOP node adopts the TEST node.
         ExpressionParser expressionParser = new ExpressionParser(this);
-        testNode.addChild(expressionParser.parse(token));
+        ICodeNode exprNode = expressionParser.parse(token);
+        testNode.addChild(exprNode);
         loopNode.addChild(testNode);
+
+        // Type check: The test expression must be boolean.
+        TypeSpec exprType = exprNode != null ? exprNode.getTypeSpec()
+                                             : Predefined.undefinedType;
+        if (!TypeChecker.isBoolean(exprType)) {
+            errorHandler.flag(token, INCOMPATIBLE_TYPES, this);
+        }
+        
         token = currentToken();
         if (token.getType() != SEMICOLON) {
             errorHandler.flag(token, MISSING_SEMICOLON, this);
