@@ -10,8 +10,7 @@ import java.util.ArrayList;
  * <p>Copyright (c) 2009 by Ronald Mak</p>
  * <p>For instructional purposes only.  No warranties.</p>
  */
-public interface SymTab
-{
+public interface SymTab {
     /**
      * Getter.
      * @return the scope nesting level of this entry.
@@ -36,4 +35,20 @@ public interface SymTab
      * @return a list of symbol table entries sorted by name.
      */
     public ArrayList<SymTabEntry> sortedEntries();
+
+    /**
+    * @return the next local variables array slot number.
+    */
+    public int nextSlotNumber();
+
+    /**
+     * @return the maximum local variables array slot number.
+     */
+    public int maxSlotNumber();
+
+    /**
+     * Called to update this stack's max slot number from a child stack
+     * @param slots The number of slots needed by the child stack
+     */
+    void childUsed(int slots);
 }

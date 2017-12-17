@@ -1,5 +1,9 @@
 package wci.frontend.subc;
 
+import static wci.message.MessageType.PARSER_SUMMARY;
+
+import java.util.ArrayList;
+
 import java.util.EnumSet;
 
 import wci.frontend.*;
@@ -15,6 +19,7 @@ import static wci.intermediate.symtabimpl.SymTabKeyImpl.*;
 import static wci.intermediate.typeimpl.TypeFormImpl.*;
 import static wci.message.MessageType.PARSER_SUMMARY;
 
+
 /**
  * <h1>SubCParserTD</h1>
  *
@@ -26,9 +31,9 @@ import static wci.message.MessageType.PARSER_SUMMARY;
 public class SubCParserTD extends Parser
 {
     protected static SubCErrorHandler errorHandler = new SubCErrorHandler();
+    protected static StringBuilder nestedStacks = new StringBuilder();
 
-    private SymTabEntry routineId;  // name of the routine being parsed
-
+    private SymTabEntry routineId;
     /**
      * Constructor.
      * @param scanner the scanner to be used with this parser.
@@ -49,15 +54,6 @@ public class SubCParserTD extends Parser
 
     /**
      * Getter.
-     * @return the routine identifier's symbol table entry.
-     */
-    public SymTabEntry getRoutineId()
-    {
-        return routineId;
-    }
-
-    /**
-     * Getter.
      * @return the error handler.
      */
     public SubCErrorHandler getErrorHandler()
@@ -74,34 +70,27 @@ public class SubCParserTD extends Parser
         throws Exception
     {
         long startTime = System.currentTimeMillis();
-
-        ICode iCode = ICodeFactory.createICode();
         Predefined.initialize(symTabStack);
-
-        // Create a dummy program identifier symbol table entry.
-        routineId = symTabStack.enterLocal("DummyProgramName".toLowerCase());
-        routineId.setDefinition(DefinitionImpl.PROGRAM);
-        symTabStack.setProgramId(routineId);
-
-        // Push a new symbol table onto the symbol table stack and set
-        // the routine's symbol table and intermediate code.
-        routineId.setAttribute(ROUTINE_SYMTAB, symTabStack.push());
-        routineId.setAttribute(ROUTINE_ICODE, iCode);
-
-        BlockParser blockParser = new BlockParser(this);
 
         try {
             Token token = nextToken();
+            ICode iCode = ICodeFactory.createICode();
 
-            // Parse a block.
-            ICodeNode rootNode = blockParser.parse(token, routineId);
-            iCode.setRoot(rootNode);
-            symTabStack.pop();
+            routineId = symTabStack.getProgramId();
+            // Push a new symbol table onto the symbol table stack and set
+            // the routine's symbol table and intermediate code.
+            routineId.setAttribute(ROUTINE_SYMTAB, symTabStack.push());
+            routineId.setAttribute(ROUTINE_ICODE, iCode);
+            routineId.setAttribute(ROUTINE_ROUTINES, new ArrayList<>());
 
+            // Parse a program.
+            ProgramParser programParser = new ProgramParser(this);
+            programParser.parse(token, routineId);
             token = currentToken();
 
             // Send the parser summary message.
             float elapsedTime = (System.currentTimeMillis() - startTime)/1000f;
+            //System.out.println(nestedStacks);
             sendMessage(new Message(PARSER_SUMMARY,
                                     new Number[] {token.getLineNumber(),
                                                   getErrorCount(),

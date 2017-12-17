@@ -13,6 +13,9 @@ import static wci.frontend.subc.SubCErrorCode.*;
 import static wci.intermediate.symtabimpl.SymTabKeyImpl.*;
 import static wci.intermediate.symtabimpl.DefinitionImpl.VARIABLE;
 
+import wci.intermediate.SymTabEntry;
+import wci.intermediate.symtabimpl.DefinitionImpl;
+
 /**
  * <h1>DeclarationsParser</h1>
  *
@@ -21,83 +24,78 @@ import static wci.intermediate.symtabimpl.DefinitionImpl.VARIABLE;
  * <p>Copyright (c) 2009 by Ronald Mak</p>
  * <p>For instructional purposes only.  No warranties.</p>
  */
-public class DeclarationsParser extends SubCParserTD
-{
+public class DeclarationsParser extends SubCParserTD {
     /**
      * Constructor.
      * @param parent the parent parser.
      */
-    public DeclarationsParser(SubCParserTD parent)
-    {
+    public DeclarationsParser(SubCParserTD parent) {
         super(parent);
     }
 
-    static final EnumSet<SubCTokenType> DECLARATION_START_SET =
-        EnumSet.of(CONST, TYPEDEF, INT, DOUBLE, FLOAT, CHAR);
+    static final EnumSet<SubCTokenType> DECLARATION_START_SET = EnumSet.of(CONST, TYPEDEF, INT, DOUBLE, FLOAT, CHAR,
+            IDENTIFIER);
 
-    static final EnumSet<SubCTokenType> TYPE_START_SET =
-        DECLARATION_START_SET.clone();
+    static final EnumSet<SubCTokenType> TYPE_START_SET = DECLARATION_START_SET.clone();
     static {
         TYPE_START_SET.remove(CONST);
     }
 
-    static final EnumSet<SubCTokenType> VAR_START_SET =
-        TYPE_START_SET.clone();
+    static final EnumSet<SubCTokenType> VAR_START_SET = TYPE_START_SET.clone();
     static {
         VAR_START_SET.remove(TYPEDEF);
     }
 
-    static final EnumSet<SubCTokenType> ROUTINE_START_SET =
-        VAR_START_SET.clone();
+    static final EnumSet<SubCTokenType> ROUTINE_START_SET = VAR_START_SET.clone();
     static {
-        ROUTINE_START_SET.remove(INT);
-        ROUTINE_START_SET.remove(DOUBLE);
-        ROUTINE_START_SET.remove(FLOAT);
-        ROUTINE_START_SET.remove(CHAR);
+        ROUTINE_START_SET.add(VOID);
     }
 
     /**
      * Parse declarations.
      * To be overridden by the specialized declarations parser subclasses.
      * @param token the initial token.
+     * @param parentId the symbol table entry of the parent routine's name.
+     * @return null
      * @throws Exception if an error occurred.
      */
-    public void parse(Token token)
-        throws Exception
-    {
-        //ICodeNode declarationNode = null;
-        //token = synchronize(DECLARATION_START_SET);
+    public SymTabEntry parse(Token token, SymTabEntry parentId) throws Exception {
 
-        if (token.getType() == CONST) {
-            token = nextToken();  // consume CONST
+        do {
+            token = synchronize(DECLARATION_START_SET);
+            SymTabEntry varType = symTabStack.lookup(token.getText());
+            if (token.getType() == CONST) {
+                token = nextToken(); // consume CONST
+                ConstantDefinitionsParser constantDefinitionsParser = new ConstantDefinitionsParser(this);
+                constantDefinitionsParser.parse(token, parentId);
+            } else if (VAR_START_SET.contains(token.getType()) && varType != null
+                    && varType.getDefinition() == DefinitionImpl.TYPE) {
+                VariableDeclarationsParser variableParser = new VariableDeclarationsParser(this);
+                variableParser.setDefinition(VARIABLE);
+                variableParser.parse(token, parentId);
+            } else {
+                token = synchronize(ROUTINE_START_SET);
+                DeclaredRoutineParser routineParser = new DeclaredRoutineParser(this);
+                routineParser.parse(token, parentId);
+            }
 
-            ConstantDefinitionsParser constantDefinitionsParser =
-                new ConstantDefinitionsParser(this);
-            constantDefinitionsParser.parse(token);
-        }
+            token = currentToken();
+        } while (!(token instanceof EofToken));
 
-        //  token = synchronize(TYPE_START_SET);
+        return null;
+    }
 
-        // if (token.getType() == TYPEDEF) {
-        //     token = nextToken();  // consume TYPEDEF
+    /**
+    * Parse the type specification.
+    * @param token the current token.
+    * @return the type specification.
+    * @throws Exception if an error occurs.
+    */
+    protected TypeSpec parseTypeSpec(Token token) throws Exception {
+        // Parse the type specification.
+        TypeSpecificationParser typeSpecificationParser = new TypeSpecificationParser(this);
+        TypeSpec type = typeSpecificationParser.parse(token);
 
-        //     TypeDefinitionsParser typeDefinitionsParser =
-        //         new TypeDefinitionsParser(this);
-        //     typeDefinitionsParser.parse(token);
-        // }
-
-        //token = synchronize(VAR_START_SET);
-
-        else if (VAR_START_SET.contains(token.getType())){
-            //token = nextToken();  // consume VAR
-
-            VariableDeclarationsParser variableDeclarationsParser =
-                new VariableDeclarationsParser(this);
-            variableDeclarationsParser.setDefinition(VARIABLE);
-            variableDeclarationsParser.parse(token);
-        }
-
-        //return declarationNode;
-        //token = synchronize(ROUTINE_START_SET);
+        return type;
     }
 }

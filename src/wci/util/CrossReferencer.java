@@ -1,6 +1,7 @@
 package wci.util;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import wci.intermediate.*;
 import wci.intermediate.symtabimpl.DefinitionImpl;
@@ -97,7 +98,7 @@ public class CrossReferencer
      * @param symTab the symbol table.
      * @param recordTypes the list to fill with RECORD type specifications.
      */
-    private void printSymTab(SymTab symTab, ArrayList<TypeSpec> recordTypes)
+    public void printSymTab(SymTab symTab, ArrayList<TypeSpec> recordTypes)
     {
         // Loop over the sorted list of symbol table entries.
         ArrayList<SymTabEntry> sorted = symTab.sortedEntries();
@@ -128,9 +129,27 @@ public class CrossReferencer
     {
         Definition definition = entry.getDefinition();
         int nestingLevel = entry.getSymTab().getNestingLevel();
+        if (definition == null) {
+        	System.out.println(entry);
+        	return;
+        }
         System.out.println(INDENT + "Defined as: " + definition.getText());
         System.out.println(INDENT + "Scope nesting level: " + nestingLevel);
 
+        if (entry.getAttribute(ROUTINE_PARMS) != null) {
+          StringBuilder sb = new StringBuilder(INDENT + "Parameters: (");
+          List<SymTabEntry> parms = (List<SymTabEntry>) entry.getAttribute(ROUTINE_PARMS);
+          for (SymTabEntry e : parms) {
+            sb.append(e.getName() + " (" + e.getTypeSpec().getIdentifier().getName() + ")");
+            sb.append(", ");
+          }
+          String s = sb.toString();
+          if (!parms.isEmpty()) {
+            s = s.substring(0, sb.length() - 2);
+          }
+          s += ")";
+          System.out.println(s);
+        }
         // Print the type specification.
         TypeSpec type = entry.getTypeSpec();
         printType(type);

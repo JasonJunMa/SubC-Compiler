@@ -59,6 +59,11 @@ class SimpleTypeParser extends TypeSpecificationParser
 
         switch ((SubCTokenType) token.getType()) {
 
+            case VOID:{
+                nextToken();
+                return Predefined.voidType;
+            }
+
             case INT:{
                 nextToken();
                 return Predefined.integerType;

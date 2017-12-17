@@ -101,7 +101,7 @@ public class ExpressionParser extends StatementParser {
             // Type check: The operands must be comparison compatible.
             TypeSpec simExprType = simExprNode != null ? simExprNode.getTypeSpec() : Predefined.undefinedType;
             if (TypeChecker.areComparisonCompatible(resultType, simExprType)) {
-                resultType = Predefined.booleanType;
+                resultType = Predefined.integerType;
             } else {
                 errorHandler.flag(token, INCOMPATIBLE_TYPES, this);
                 resultType = Predefined.undefinedType;
@@ -512,6 +512,17 @@ public class ExpressionParser extends StatementParser {
             rootNode.setTypeSpec(type);
             break;
         }
+
+            case FUNCTION: {
+                CallParser callParser = new CallParser(this);
+                rootNode = callParser.parse(token);
+                break;
+            }
+            case PROCEDURE: {
+              errorHandler.flag(token, SubCErrorCode.INVALID_ASSIGMENT_VOID, this);
+              synchronize(STMT_FOLLOW_SET);
+              break;
+            }
 
         default: {
             VariableParser variableParser = new VariableParser(this);

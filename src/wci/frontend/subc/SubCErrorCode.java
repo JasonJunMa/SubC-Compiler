@@ -69,6 +69,8 @@ public enum SubCErrorCode
     UNIMPLEMENTED("Unimplemented feature"),
     UNRECOGNIZABLE("Unrecognizable input"),
     WRONG_NUMBER_OF_PARMS("Wrong number of actual parameters"),
+    INVALID_ASSIGMENT_VOID("INVALID_ASSIGMENT_VOID"),
+    MISSING_EXPRESSION("MISSING_EXPRESSION"),
 
     // Fatal errors.
     IO_ERROR(-101, "Object I/O error"),

@@ -10,8 +10,7 @@ import wci.intermediate.SymTabKey;
  * <p>Copyright (c) 2009 by Ronald Mak</p>
  * <p>For instructional purposes only.  No warranties.</p>
  */
-public enum SymTabKeyImpl implements SymTabKey
-{
+public enum SymTabKeyImpl implements SymTabKey {
     // Constant.
     CONSTANT_VALUE,
 
@@ -19,9 +18,14 @@ public enum SymTabKeyImpl implements SymTabKey
     VARIABLE_VALUE,
 
     // Procedure or function.
-    ROUTINE_CODE, ROUTINE_SYMTAB, ROUTINE_ICODE,
-    ROUTINE_PARMS, ROUTINE_ROUTINES,
+    ROUTINE_CODE, ROUTINE_SYMTAB, ROUTINE_ICODE, ROUTINE_PARMS, ROUTINE_ROUTINES,
 
     // Variable or record field value.
-    DATA_VALUE
+    DATA_VALUE,
+
+    // Local variables array slot numbers.
+    SLOT, WRAP_SLOT,
+
+    // Hack for stupid pascal-centric code
+    MAIN_METHOD_ROUTINE
 }

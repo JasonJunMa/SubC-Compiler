@@ -120,7 +120,7 @@ public class Token
      * @return the next character from the source without moving forward.
      * @throws Exception if an error occurred.
      */
-    protected char peekChar()
+    public char peekChar()
         throws Exception
     {
         return source.peekChar();

@@ -96,7 +96,7 @@ public class SymTabStackImpl
     {
         SymTab symTab = get(currentNestingLevel);
         remove(currentNestingLevel--);
-
+        getLocalSymTab().childUsed(symTab.maxSlotNumber());
         return symTab;
     }
 

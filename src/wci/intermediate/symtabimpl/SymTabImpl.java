@@ -15,23 +15,22 @@ import wci.intermediate.*;
  * <p>Copyright (c) 2009 by Ronald Mak</p>
  * <p>For instructional purposes only.  No warranties.</p>
  */
-public class SymTabImpl
-    extends TreeMap<String, SymTabEntry>
-    implements SymTab
-{
-    private int nestingLevel;
+public class SymTabImpl extends TreeMap<String, SymTabEntry> implements SymTab {
+    private int nestingLevel; // scope nesting level of this entry
+    private int slotNumber; // local variables array slot number
+    private int maxSlotNumber; // max slot number value
 
-    public SymTabImpl(int nestingLevel)
-    {
+    public SymTabImpl(int nestingLevel) {
         this.nestingLevel = nestingLevel;
+        this.slotNumber = -1;
+        this.maxSlotNumber = -1;
     }
 
     /**
      * Getter.
      * @return the scope nesting level of this entry.
      */
-    public int getNestingLevel()
-    {
+    public int getNestingLevel() {
         return nestingLevel;
     }
 
@@ -40,8 +39,7 @@ public class SymTabImpl
      * @param name the name of the entry.
      * @return the new entry.
      */
-    public SymTabEntry enter(String name)
-    {
+    public SymTabEntry enter(String name) {
         SymTabEntry entry = SymTabFactory.createSymTabEntry(name, this);
         put(name, entry);
 
@@ -53,16 +51,14 @@ public class SymTabImpl
      * @param name the name of the entry.
      * @return the entry, or null if it does not exist.
      */
-    public SymTabEntry lookup(String name)
-    {
+    public SymTabEntry lookup(String name) {
         return get(name);
     }
 
     /**
      * @return a list of symbol table entries sorted by name.
      */
-    public ArrayList<SymTabEntry> sortedEntries()
-    {
+    public ArrayList<SymTabEntry> sortedEntries() {
         Collection<SymTabEntry> entries = values();
         Iterator<SymTabEntry> iter = entries.iterator();
         ArrayList<SymTabEntry> list = new ArrayList<SymTabEntry>(size());
@@ -72,6 +68,26 @@ public class SymTabImpl
             list.add(iter.next());
         }
 
-        return list;  // sorted list of entries
+        return list; // sorted list of entries
+    }
+
+    /**
+    * @return the next local variables array slot number.
+    */
+    public int nextSlotNumber() {
+        maxSlotNumber++;
+        return ++slotNumber;
+    }
+
+    /**
+     * @return the maximum local variables array slot number.
+     */
+    public int maxSlotNumber() {
+        return maxSlotNumber;
+    }
+
+    @Override
+    public void childUsed(int slots) {
+        maxSlotNumber = Math.max(slotNumber + slots, maxSlotNumber);
     }
 }

@@ -22,20 +22,17 @@ import static wci.intermediate.icodeimpl.ICodeKeyImpl.*;
  * <p>Copyright (c) 2009 by Ronald Mak</p>
  * <p>For instructional purposes only.  No warranties.</p>
  */
-public class WhileStatementParser extends StatementParser
-{
+public class WhileStatementParser extends StatementParser {
     /**
      * Constructor.
      * @param parent the parent parser.
      */
-    public WhileStatementParser(SubCParserTD parent)
-    {
+    public WhileStatementParser(SubCParserTD parent) {
         super(parent);
     }
 
     // Synchronization set for DO.
-    private static final EnumSet<SubCTokenType> DO_SET =
-        StatementParser.STMT_START_SET.clone();
+    private static final EnumSet<SubCTokenType> DO_SET = StatementParser.STMT_START_SET.clone();
     static {
         DO_SET.add(LEFT_BRACE);
         DO_SET.addAll(StatementParser.STMT_FOLLOW_SET);
@@ -47,10 +44,8 @@ public class WhileStatementParser extends StatementParser
      * @return the root node of the generated parse tree.
      * @throws Exception if an error occurred.
      */
-    public ICodeNode parse(Token token)
-        throws Exception
-    {
-        token = nextToken();  // consume the WHILE
+    public ICodeNode parse(Token token, SymTabEntry parentId) throws Exception {
+        token = nextToken(); // consume the WHILE
 
         // Create LOOP, TEST, and NOT nodes.
         ICodeNode loopNode = ICodeFactory.createICodeNode(LOOP);
@@ -69,8 +64,7 @@ public class WhileStatementParser extends StatementParser
         notNode.addChild(exprNode);
 
         // Type check: The test expression must be boolean.
-        TypeSpec exprType = exprNode != null ? exprNode.getTypeSpec()
-                                             : Predefined.undefinedType;
+        TypeSpec exprType = exprNode != null ? exprNode.getTypeSpec() : Predefined.undefinedType;
         if (!TypeChecker.isBoolean(exprType)) {
             errorHandler.flag(token, INCOMPATIBLE_TYPES, this);
         }
@@ -79,15 +73,14 @@ public class WhileStatementParser extends StatementParser
         token = synchronize(DO_SET);
         if (token.getType() == LEFT_BRACE) {
             //token = nextToken();  // consume the DO
-        }
-        else {
+        } else {
             errorHandler.flag(token, MISSING_LEFT_BRACE, this);
         }
 
         // Parse the statement.
         // The LOOP node adopts the statement subtree as its second child.
         StatementParser statementParser = new StatementParser(this);
-        loopNode.addChild(statementParser.parse(token));
+        loopNode.addChild(statementParser.parse(token, parentId));
 
         return loopNode;
     }

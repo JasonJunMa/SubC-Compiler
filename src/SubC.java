@@ -1,8 +1,10 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 
 import wci.frontend.*;
 import wci.intermediate.*;
+import wci.intermediate.symtabimpl.DefinitionImpl;
 import wci.backend.*;
 import wci.message.*;
 import wci.util.*;
@@ -45,7 +47,11 @@ public class SubC
 
             backend = BackendFactory.createBackend(operation);
             backend.addMessageListener(new BackendMessageListener());
-
+            // Create a dummy program identifier symbol table entry.
+            String progName = new File(filePath).getName().replace(".c", "");
+            SymTabEntry routineId = parser.getSymTabStack().enterLocal(progName);
+            routineId.setDefinition(DefinitionImpl.PROGRAM);
+            parser.getSymTabStack().setProgramId(routineId);
             parser.parse();
             source.close();
 

@@ -18,14 +18,12 @@ import static wci.intermediate.icodeimpl.ICodeKeyImpl.*;
  * <p>Copyright (c) 2009 by Ronald Mak</p>
  * <p>For instructional purposes only.  No warranties.</p>
  */
-public class BlockParser extends SubCParserTD
-{
+public class BlockParser extends SubCParserTD {
     /**
      * Constructor.
      * @param parent the parent parser.
      */
-    public BlockParser(SubCParserTD parent)
-    {
+    public BlockParser(SubCParserTD parent) {
         super(parent);
     }
 
@@ -36,15 +34,7 @@ public class BlockParser extends SubCParserTD
      * @return the root node of the parse tree.
      * @throws Exception if an error occurred.
      */
-    public ICodeNode parse(Token token, SymTabEntry routineId)
-        throws Exception
-    {
-        while(token.getType() != LEFT_BRACE){
-            DeclarationsParser declarationsParser = new DeclarationsParser(this);
-            // Parse any declarations.
-            declarationsParser.parse(token);
-            token = currentToken();
-        }
+    public ICodeNode parse(Token token, SymTabEntry routineId) throws Exception {
 
         StatementParser statementParser = new StatementParser(this);
 
@@ -53,8 +43,8 @@ public class BlockParser extends SubCParserTD
         ICodeNode rootNode = null;
 
         // Look for the LEFT_BRACE token to parse a compound statement.
-        if (tokenType == LEFT_BRACE){
-            rootNode = statementParser.parse(token);
+        if (tokenType == LEFT_BRACE) {
+            rootNode = statementParser.parse(token, routineId);
         }
 
         // Missing LEFT_BRACE: Attempt to parse anyway if possible.
@@ -63,7 +53,7 @@ public class BlockParser extends SubCParserTD
 
             if (StatementParser.STMT_START_SET.contains(tokenType)) {
                 rootNode = ICodeFactory.createICodeNode(COMPOUND);
-                statementParser.parseList(token, rootNode, RIGHT_BRACE,MISSING_RIGHT_BRACE);
+                statementParser.parseList(token, rootNode, routineId, RIGHT_BRACE, MISSING_RIGHT_BRACE);
             }
         }
 

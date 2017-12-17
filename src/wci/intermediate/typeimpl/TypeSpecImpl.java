@@ -124,4 +124,8 @@ public class TypeSpecImpl
         return form == SUBRANGE ? (TypeSpec) getAttribute(SUBRANGE_BASE_TYPE)
                                 : this;
     }
+	@Override
+	public String toString() {
+		return "TypeSpecImpl [form=" + form + ", identifier=" + identifier.getName() + "]";
+	}
 }

@@ -159,6 +159,10 @@ public class ParseTreePrinter
         if (isSymTabEntry) {
             int level = ((SymTabEntry) value).getSymTab().getNestingLevel();
             printAttribute("LEVEL", level);
+            Integer slot = (Integer) ((SymTabEntry) value).getAttribute(SLOT);
+            if (slot != null) {
+            	printAttribute("SLOT", slot);
+            }
         }
     }
 
