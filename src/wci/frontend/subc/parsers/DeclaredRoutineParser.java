@@ -130,10 +130,7 @@ public class DeclaredRoutineParser extends DeclarationsParser {
         }
 
         // Pop the routine's symbol table off the stack.
-symTabStack.pop();
-
-
-
+        symTabStack.pop();
         return routineId;
     }
 
@@ -257,7 +254,7 @@ symTabStack.pop();
             TokenType tokenType = token.getType();
 
             // Loop to parse sublists of formal parameter declarations.
-            while ((tokenType == INT)||(tokenType==FLOAT)||(tokenType==DOUBLE)) {
+            while ((tokenType == INT)||(tokenType==FLOAT)||(tokenType==DOUBLE)||(tokenType==CHAR)) {
                 parms.add(parseParm(token, routineId));
                 token = currentToken();
                 tokenType = token.getType();

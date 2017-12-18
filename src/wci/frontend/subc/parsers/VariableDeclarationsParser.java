@@ -107,7 +107,7 @@ public class VariableDeclarationsParser extends DeclarationsParser {
     // Synchronization set to follow a sublist identifier.
     private static final EnumSet<SubCTokenType> IDENTIFIER_FOLLOW_SET = EnumSet.of(COLON, SEMICOLON);
     static {
-        IDENTIFIER_FOLLOW_SET.addAll(DeclarationsParser.VAR_START_SET);
+      //  IDENTIFIER_FOLLOW_SET.addAll(DeclarationsParser.VAR_START_SET);
     }
 
     // Synchronization set for the , token.
@@ -129,6 +129,7 @@ public class VariableDeclarationsParser extends DeclarationsParser {
 
             SymTabEntry id = parseIdentifier(token);
             token = currentToken();
+            if (token.getType() == IDENTIFIER) token = nextToken();
 
             if (id != null) {
                 sublist.add(id);

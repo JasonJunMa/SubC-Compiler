@@ -1,7 +1,7 @@
 float fib1(int n,float c)
 {
     int i,t1,t2,next;
-    i = 1;
+    i = c;
     t1= 0;
     t2= 1;
     next = 0;
@@ -47,12 +47,14 @@ int main(){
     if(j==1){
         writeln("Please enter the number of terms:");
         readln(k);
-        m=fib1(k,m);
+        j=fib1(k,m);
+        fib1(k);
     }
     else{
         writeln("Enter a positive number:");
         readln(k);
         fib2(k);
+        m = fib2(k);
     }
     return 0;
 }

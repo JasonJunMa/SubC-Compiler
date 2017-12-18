@@ -12,5 +12,5 @@ run:
 clean:
 	rm -rf *.class
 	rm -rf *.j
-	rm -rf classesj
+	rm -rf classes
 	rm -rf subcRTL.jar
