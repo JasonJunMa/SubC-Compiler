@@ -10,7 +10,7 @@
             "request": "launch",
             "mainClass": "SubC",
             "projectName": "SubC-Compiler",
-            "args": "compile -x hello.c"
+            "args": "compile -ix fib.c"
         },
         {
             "type": "java",

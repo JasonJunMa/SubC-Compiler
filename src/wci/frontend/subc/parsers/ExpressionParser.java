@@ -191,36 +191,37 @@ public class ExpressionParser extends StatementParser {
             // Determine the result type.
             switch ((SubCTokenType) operator) {
 
-            case PLUS:
-            case MINUS: {
-                // Both operands integer ==> integer result.
-                if (TypeChecker.areBothInteger(resultType, termType)) {
-                    resultType = Predefined.integerType;
+                case PLUS:
+                case MINUS: {
+                    // Both operands integer ==> integer result.
+                    if (TypeChecker.areBothInteger(resultType, termType)) {
+                        resultType = Predefined.integerType;
+                    }
+
+                    // Both real operands or one real and one integer operand
+                    // ==> real result.
+                    else if (TypeChecker.isAtLeastOneReal(resultType, termType)) {
+                        resultType = Predefined.realType;
+                    }
+
+                    else {
+                        errorHandler.flag(token, INCOMPATIBLE_TYPES, this);
+                    }
+
+                    break;
                 }
 
-                // Both real operands or one real and one integer operand
-                // ==> real result.
-                else if (TypeChecker.isAtLeastOneReal(resultType, termType)) {
-                    resultType = Predefined.realType;
+                case OR: {
+                    // Both operands boolean ==> boolean result.
+                    if (TypeChecker.areBothBoolean(resultType, termType)) {
+                        resultType = Predefined.booleanType;
+                    } else {
+                        errorHandler.flag(token, INCOMPATIBLE_TYPES, this);
+                    }
+
+                    break;
                 }
 
-                else {
-                    errorHandler.flag(token, INCOMPATIBLE_TYPES, this);
-                }
-
-                break;
-            }
-
-            case OR: {
-                // Both operands boolean ==> boolean result.
-                if (TypeChecker.areBothBoolean(resultType, termType)) {
-                    resultType = Predefined.booleanType;
-                } else {
-                    errorHandler.flag(token, INCOMPATIBLE_TYPES, this);
-                }
-
-                break;
-            }
             }
 
             rootNode.setTypeSpec(resultType);
