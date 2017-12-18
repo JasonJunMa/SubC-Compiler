@@ -186,8 +186,8 @@ public class CrossReferencer
             }
 
             case VARIABLE: {
-                Object value = entry.getAttribute(CONSTANT_VALUE);
-                System.out.println(INDENT + "Value = " + toString(value));
+                //Object value = entry.getAttribute(CONSTANT_VALUE);
+                //System.out.println(INDENT + "Value = " + toString(value));
 
                 // Print the type details only if the type is unnamed.
                 if (type.getIdentifier() == null) {

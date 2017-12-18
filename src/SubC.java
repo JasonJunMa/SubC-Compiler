@@ -27,6 +27,14 @@ public class SubC
     private ICode iCode;              // generated intermediate code
     private SymTabStack symTabStack;  // symbol table stack
     private Backend backend;          // backend
+
+    private boolean intermediate;     // true to print intermediate code
+    private boolean xref;             // true to print cross-reference listing
+    private boolean lines;            // true to print source line tracing
+    private boolean assign;           // true to print value assignment tracing
+    private boolean fetch;            // true to print value fetch tracing
+    private boolean call;             // true to print routine call tracing
+    private boolean returnn;          // true to print routine return tracing
     /**
      * Compile or interpret a SubC source program.
      * @param operation either "compile" or "execute".
@@ -36,8 +44,13 @@ public class SubC
     public SubC(String operation, String filePath, String flags)
     {
         try {
-            boolean intermediate = flags.indexOf('i') > -1;
-            boolean xref         = flags.indexOf('x') > -1;
+            intermediate = flags.indexOf('i') > -1;
+            xref         = flags.indexOf('x') > -1;
+            lines        = flags.indexOf('l') > -1;
+            assign       = flags.indexOf('a') > -1;
+            fetch        = flags.indexOf('f') > -1;
+            call         = flags.indexOf('c') > -1;
+            returnn      = flags.indexOf('r') > -1;
 
             source = new Source(new BufferedReader(new FileReader(filePath)));
             source.addMessageListener(new SourceMessageListener());
@@ -47,11 +60,13 @@ public class SubC
 
             backend = BackendFactory.createBackend(operation);
             backend.addMessageListener(new BackendMessageListener());
-            // Create a dummy program identifier symbol table entry.
+
+            // Create a dummy program identifier symbol table entry using the file name
             String progName = new File(filePath).getName().replace(".c", "");
             SymTabEntry routineId = parser.getSymTabStack().enterLocal(progName);
             routineId.setDefinition(DefinitionImpl.PROGRAM);
             parser.getSymTabStack().setProgramId(routineId);
+
             parser.parse();
             source.close();
 
@@ -62,10 +77,8 @@ public class SubC
                 iCode = (ICode) programId.getAttribute(ROUTINE_ICODE);
 
                 if (xref) {
-                    ParseTreePrinter treePrinter =
-                                new ParseTreePrinter(System.out);
-                    treePrinter.print(symTabStack);
-                    CrossReferencer crossReferencer = new CrossReferencer();
+                    CrossReferencer crossReferencer =
+                                        new CrossReferencer();
                     crossReferencer.print(symTabStack);
                 }
 
@@ -84,7 +97,7 @@ public class SubC
         }
     }
 
-    private static final String FLAGS = "[-ix]";
+    private static final String FLAGS = "[-ixlafcr]";
     private static final String USAGE =
         "Usage: SubC execute|compile " + FLAGS + " <source file path>";
 
@@ -236,6 +249,15 @@ public class SubC
     private static final String ASSIGN_FORMAT =
         ">>> LINE %03d: %s = %s\n";
 
+    private static final String FETCH_FORMAT =
+        ">>> AT LINE %03d: %s : %s\n";
+
+    private static final String CALL_FORMAT =
+        ">>> AT LINE %03d: CALL %s\n";
+
+    private static final String RETURN_FORMAT =
+        ">>> AT LINE %03d: RETURN FROM %s\n";
+
     /**
      * Listener for back end messages.
      */
@@ -253,19 +275,62 @@ public class SubC
 
             switch (type) {
 
-                case ASSIGN: {
-                    if (firstOutputMessage) {
-                        System.out.println("\n===== OUTPUT =====\n");
-                        firstOutputMessage = false;
+               case SOURCE_LINE: {
+                    if (lines) {
+                        int lineNumber = (Integer) message.getBody();
+
+                        System.out.printf(LINE_FORMAT, lineNumber);
                     }
+                    break;
+                }
 
-                    Object body[] = (Object[]) message.getBody();
-                    int lineNumber = (Integer) body[0];
-                    String variableName = (String) body[1];
-                    Object value = body[2];
+                case ASSIGN: {
+                    if (assign) {
+                        Object body[] = (Object[]) message.getBody();
+                        int lineNumber = (Integer) body[0];
+                        String variableName = (String) body[1];
+                        Object value = body[2];
 
-                    System.out.printf(ASSIGN_FORMAT,
-                                      lineNumber, variableName, value);
+                        System.out.printf(ASSIGN_FORMAT,
+                                          lineNumber, variableName, value);
+                    }
+                    break;
+                }
+
+                case FETCH: {
+                    if (fetch) {
+                        Object body[] = (Object[]) message.getBody();
+                        int lineNumber = (Integer) body[0];
+                        String variableName = (String) body[1];
+                        Object value = body[2];
+
+                        System.out.printf(FETCH_FORMAT,
+                                          lineNumber, variableName, value);
+                    }
+                    break;
+                }
+
+                case CALL: {
+                    if (call) {
+                        Object body[] = (Object[]) message.getBody();
+                        int lineNumber = (Integer) body[0];
+                        String routineName = (String) body[1];
+
+                        System.out.printf(CALL_FORMAT,
+                                          lineNumber, routineName);
+                    }
+                    break;
+                }
+
+                case RETURN: {
+                    if (returnn) {
+                        Object body[] = (Object[]) message.getBody();
+                        int lineNumber = (Integer) body[0];
+                        String routineName = (String) body[1];
+
+                        System.out.printf(RETURN_FORMAT,
+                                          lineNumber, routineName);
+                    }
                     break;
                 }
 

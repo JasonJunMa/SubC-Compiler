@@ -169,7 +169,7 @@ public class VariableDeclarationsParser extends DeclarationsParser {
      * @return the symbol table entry of the identifier.
      * @throws Exception if an error occurred.
      */
-    private SymTabEntry parseIdentifier(Token token) throws Exception {
+    public SymTabEntry parseIdentifier(Token token) throws Exception {
         SymTabEntry id = null;
 
         if (token.getType() == IDENTIFIER) {
