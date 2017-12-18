@@ -1,6 +1,7 @@
 # Compiled class file
 *.class
 /classes/
+*.j
 
 #Eclipse project file
 .classpath
