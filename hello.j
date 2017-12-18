@@ -15,19 +15,17 @@
 .limit stack 1
 .end method
 
-.method private static foo()I
+.method private static foo()Ljava/util/HashMap;
 
 
-.var 0 is foo I
+.var 0 is foo Ljava/util/HashMap;
 
 
 
-.line 5
-	iconst_1
-	istore_0
+	nop
 
-	iload_0
-	ireturn
+	aload_0
+	areturn
 
 .limit locals 1
 .limit stack 1
@@ -47,26 +45,14 @@
 
 
 .var 0 is main Ljava/lang/StringBuilder;
-.var 2 is k I
+.var 2 is i I
 .var 3 is j I
 
 
+.line 6
+.line 7
 .line 9
-.line 10
-.line 11
-	invokestatic	hello/foo()I
-	istore_2
-.line 12
-	iload_2
-	iconst_4
-	iadd
+	iconst_1
 	istore_3
-
-	getstatic	hello/_runTimer LRunTimer;
-	invokevirtual	RunTimer.printElapsedTime()V
-
-	return
-
-.limit locals 4
-.limit stack 3
-.end method
+.line 11
+	invokestatic	hello/foo()Ljava/util/HashMap;

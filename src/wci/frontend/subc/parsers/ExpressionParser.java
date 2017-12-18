@@ -101,7 +101,7 @@ public class ExpressionParser extends StatementParser {
             // Type check: The operands must be comparison compatible.
             TypeSpec simExprType = simExprNode != null ? simExprNode.getTypeSpec() : Predefined.undefinedType;
             if (TypeChecker.areComparisonCompatible(resultType, simExprType)) {
-                resultType = Predefined.integerType;
+                resultType = Predefined.booleanType;
             } else {
                 errorHandler.flag(token, INCOMPATIBLE_TYPES, this);
                 resultType = Predefined.undefinedType;
@@ -116,14 +116,14 @@ public class ExpressionParser extends StatementParser {
     }
 
     // Set of additive operators.
-    private static final EnumSet<SubCTokenType> ADD_OPS = EnumSet.of(PLUS, MINUS);
+    private static final EnumSet<SubCTokenType> ADD_OPS = EnumSet.of(PLUS, MINUS,SubCTokenType.OR);
 
     // Map additive operator tokens to node types.
     private static final HashMap<SubCTokenType, ICodeNodeTypeImpl> ADD_OPS_OPS_MAP = new HashMap<SubCTokenType, ICodeNodeTypeImpl>();
     static {
         ADD_OPS_OPS_MAP.put(PLUS, ADD);
         ADD_OPS_OPS_MAP.put(MINUS, SUBTRACT);
-        //ADD_OPS_OPS_MAP.put(SubCTokenType.OR, ICodeNodeTypeImpl.OR);
+        ADD_OPS_OPS_MAP.put(SubCTokenType.OR, ICodeNodeTypeImpl.OR);
     };
 
     /**
@@ -239,10 +239,9 @@ public class ExpressionParser extends StatementParser {
     private static final HashMap<SubCTokenType, ICodeNodeType> MULT_OPS_OPS_MAP = new HashMap<SubCTokenType, ICodeNodeType>();
     static {
         MULT_OPS_OPS_MAP.put(STAR, MULTIPLY);
-        MULT_OPS_OPS_MAP.put(SLASH, FLOAT_DIVIDE);
+        MULT_OPS_OPS_MAP.put(SLASH, INTEGER_DIVIDE);
         //MULT_OPS_OPS_MAP.put(DIV, INTEGER_DIVIDE);
         MULT_OPS_OPS_MAP.put(SubCTokenType.MOD, ICodeNodeTypeImpl.MOD);
-        //MULT_OPS_OPS_MAP.put(SubCTokenType.AND, ICodeNodeTypeImpl.AND);
     };
 
     /**
@@ -282,7 +281,8 @@ public class ExpressionParser extends StatementParser {
 
             // Determine the result type.
             switch ((SubCTokenType) operator) {
-
+            case PLUS:
+            case MINUS:
             case STAR: {
                 // Both operands integer ==> integer result.
                 if (TypeChecker.areBothInteger(resultType, factorType)) {
@@ -305,8 +305,10 @@ public class ExpressionParser extends StatementParser {
             case SLASH: {
                 // All integer and real operand combinations
                 // ==> real result.
-                if (TypeChecker.areBothInteger(resultType, factorType)
-                        || TypeChecker.isAtLeastOneReal(resultType, factorType)) {
+                if (TypeChecker.areBothInteger(resultType, factorType)){
+                    resultType = Predefined.integerType;
+                }
+                else if(TypeChecker.isAtLeastOneReal(resultType, factorType)) {
                     resultType = Predefined.realType;
                 } else {
                     errorHandler.flag(token, INCOMPATIBLE_TYPES, this);

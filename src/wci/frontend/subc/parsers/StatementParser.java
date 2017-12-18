@@ -43,7 +43,7 @@ public class StatementParser extends SubCParserTD {
 
     // Synchronization set for starting a statement.
     protected static final EnumSet<SubCTokenType> STMT_START_SET = EnumSet.of(LEFT_BRACE, SWITCH, FOR, SubCTokenType.IF,
-            DO, WHILE, IDENTIFIER, SEMICOLON, INT, CHAR, DOUBLE, FLOAT, CONST);
+            DO, WHILE, IDENTIFIER, SEMICOLON, INT, CHAR, DOUBLE, FLOAT, CONST,RETURN);
 
     // Synchronization set for following a statement.
     protected static final EnumSet<SubCTokenType> STMT_FOLLOW_SET = EnumSet.of(SEMICOLON, ELSE, WHILE, CASE);
@@ -67,34 +67,30 @@ public class StatementParser extends SubCParserTD {
         }
 
         case IDENTIFIER: {
-            String name = token.getText().toLowerCase();
+            String name = token.getText();
             SymTabEntry id = symTabStack.lookup(name);
             Definition idDefn = id != null ? id.getDefinition() : DefinitionImpl.UNDEFINED;
 
             // Assignment statement or procedure call.
             switch ((DefinitionImpl) idDefn) {
-
-            case VARIABLE:
-            case VALUE_PARM:
-            case VAR_PARM:
-            case UNDEFINED: {
-                AssignmentStatementParser assignmentParser = new AssignmentStatementParser(this);
-                statementNode = assignmentParser.parse(token,parentID);
-                break;
-            }
-
-            case FUNCTION:
-
-            case PROCEDURE: {
-                CallParser callParser = new CallParser(this);
-                statementNode = callParser.parse(token);
-                break;
-            }
-
-            default: {
-                errorHandler.flag(token, SubCErrorCode.UNEXPECTED_TOKEN, this);
-                token = nextToken(); // consume identifier
-            }
+                case VARIABLE:
+                case VALUE_PARM:
+                case VAR_PARM:
+                case UNDEFINED: {
+                    AssignmentStatementParser assignmentParser = new AssignmentStatementParser(this);
+                    statementNode = assignmentParser.parse(token,parentID);
+                    break;
+                }
+                case FUNCTION:
+                case PROCEDURE: {
+                    CallParser callParser = new CallParser(this);
+                    statementNode = callParser.parse(token);
+                    break;
+                }
+                default: {
+                    errorHandler.flag(token, SubCErrorCode.UNEXPECTED_TOKEN, this);
+                    token = nextToken(); // consume identifier
+                }
             }
 
             break;

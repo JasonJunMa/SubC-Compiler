@@ -101,8 +101,6 @@ public class AssignmentStatementParser extends StatementParser {
         token = currentToken();
         if (token.getType() != SEMICOLON) {
             errorHandler.flag(token, MISSING_SEMICOLON, this);
-        }else{
-          token = nextToken();
         }
         return assignNode;
     }

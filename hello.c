@@ -1,13 +1,16 @@
+void foo(){
 
-int foo()
-{
-    return 1;
 }
+int main(){
 
-int main()
-{
-    int k;
+    int i;
     int j;
-    k = foo();
-    j = k + 4;
+
+    j = 1;
+
+    foo();
+
+    // display the value for i;
+
+    return 0;
 }

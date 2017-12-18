@@ -33,7 +33,7 @@ public class DeclarationsParser extends SubCParserTD {
         super(parent);
     }
 
-    static final EnumSet<SubCTokenType> DECLARATION_START_SET = EnumSet.of(CONST, TYPEDEF, INT, DOUBLE, FLOAT, CHAR,
+    static final EnumSet<SubCTokenType> DECLARATION_START_SET = EnumSet.of(CONST, TYPEDEF, INT, DOUBLE, FLOAT, CHAR,VOID,
             IDENTIFIER);
 
     static final EnumSet<SubCTokenType> TYPE_START_SET = DECLARATION_START_SET.clone();
@@ -48,7 +48,7 @@ public class DeclarationsParser extends SubCParserTD {
 
     static final EnumSet<SubCTokenType> ROUTINE_START_SET = VAR_START_SET.clone();
     static {
-        ROUTINE_START_SET.add(VOID);
+
     }
 
     /**
